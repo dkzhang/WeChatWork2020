@@ -74,17 +74,18 @@ func InitTableFromFile(db *gorm.DB, csvFilePath string) (users map[string]User, 
 
 		//插入map
 		users[user.UserID] = user
+	}
 
-		//写入数据库
-		if err := CreateUsers(db, users); err != nil {
-			log.WithFields(log.Fields{
-				"error": err,
-			}).Error("create users in db error")
-		} else {
-			log.WithFields(log.Fields{
-				"count": len(users),
-			}).Info("create users in db success")
-		}
+	//写入数据库
+	if err := CreateUsers(db, users); err != nil {
+		log.WithFields(log.Fields{
+			"error": err,
+		}).Error("create users in db error")
+		return nil, fmt.Errorf("create users in db error: %v", err)
+	} else {
+		log.WithFields(log.Fields{
+			"count": len(users),
+		}).Info("create users in db success")
 	}
 
 	return users, nil
@@ -94,7 +95,7 @@ func CreateUsers(db *gorm.DB, users map[string]User) error {
 	return db.Transaction(func(tx *gorm.DB) error {
 		for _, user := range users {
 			if err := tx.Create(&user).Error; err != nil {
-				return fmt.Errorf("create user %s %s error: %v", user.UserID, user.Name)
+				return fmt.Errorf("create user %s %s error: %v", user.UserID, user.Name, err)
 			}
 		}
 		return nil
