@@ -106,7 +106,11 @@ func GetAllUsers(db *gorm.DB) (usersMap map[string]User, err error) {
 	var usersArray []User
 	usersMap = make(map[string]User)
 
-	db.Find(&usersArray)
+	err = db.Find(&usersArray).Error
+	if err != nil {
+		return nil, fmt.Errorf("GetAllUsers Find in DB error: %v", err)
+	}
+
 	for _, user := range usersArray {
 		usersMap[user.UserID] = user
 	}
