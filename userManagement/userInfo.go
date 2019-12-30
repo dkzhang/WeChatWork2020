@@ -100,3 +100,12 @@ func CreateUsers(db *gorm.DB, users map[string]User) error {
 		return nil
 	})
 }
+
+func GetAllUsers(db *gorm.DB) (usersMap map[string]User, err error) {
+	usersArray := make([]User, 0)
+	db.Find(&usersArray)
+	for _, user := range usersArray {
+		usersMap[user.UserID] = user
+	}
+	return usersMap, nil
+}

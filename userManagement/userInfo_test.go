@@ -20,5 +20,10 @@ func TestInitTableFromFile(t *testing.T) {
 		t.Errorf("InitTableFromFile error: %v", err)
 	} else {
 		t.Logf("InitTableFromFile success. Create %d users.", len(users))
+
+		usersMap, err := GetAllUsers(db)
+		if err != nil {
+			t.Logf("Users Map = %v", usersMap)
+		}
 	}
 }
