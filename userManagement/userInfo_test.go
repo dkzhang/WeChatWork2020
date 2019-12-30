@@ -22,7 +22,7 @@ func TestInitTableFromFile(t *testing.T) {
 		t.Logf("InitTableFromFile success. Create %d users.", len(users))
 
 		usersMap, err := GetAllUsers(db)
-		if err != nil {
+		if err == nil {
 			t.Logf("Users Map = %v", usersMap)
 		}
 	}

@@ -103,7 +103,9 @@ func CreateUsers(db *gorm.DB, users map[string]User) error {
 }
 
 func GetAllUsers(db *gorm.DB) (usersMap map[string]User, err error) {
-	usersArray := make([]User, 0)
+	var usersArray []User
+	usersMap = make(map[string]User)
+
 	db.Find(&usersArray)
 	for _, user := range usersArray {
 		usersMap[user.UserID] = user
