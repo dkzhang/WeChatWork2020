@@ -3,12 +3,14 @@ package articleManagement
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"testing"
 )
 
 func TestArticle(t *testing.T) {
 	db, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
+		t.Errorf("gorm.Open error: %v", err)
 		panic("failed to connect database")
 	}
 	defer db.Close()
@@ -18,7 +20,7 @@ func TestArticle(t *testing.T) {
 
 	for i := 0; i < 10; i++ {
 		err := CreateArticle(db, Article{
-			Title:        fmt.Sprintf("article%3d", i),
+			Title:        fmt.Sprintf("article%03d", i),
 			Author:       fmt.Sprintf("a%d", i),
 			Abstract:     "xxx",
 			FilePath:     "http://001",
